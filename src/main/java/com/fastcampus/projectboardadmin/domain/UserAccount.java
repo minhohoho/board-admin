@@ -1,4 +1,4 @@
-package com.fastcampus.projectboard.domain;
+package com.fastcampus.projectboardadmin.domain;
 
 import com.fastcampus.projectboardadmin.domain.AuditingFields;
 import com.fastcampus.projectboardadmin.domain.constant.RoleType;
