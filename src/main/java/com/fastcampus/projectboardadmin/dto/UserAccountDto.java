@@ -1,6 +1,6 @@
 package com.fastcampus.projectboardadmin.dto;
 
-import com.fastcampus.projectboard.domain.UserAccount;
+import com.fastcampus.projectboardadmin.domain.UserAccount;
 import com.fastcampus.projectboardadmin.domain.constant.RoleType;
 
 import java.time.LocalDateTime;
