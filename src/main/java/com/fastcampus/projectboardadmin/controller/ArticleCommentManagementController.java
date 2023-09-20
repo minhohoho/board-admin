@@ -1,6 +1,5 @@
 package com.fastcampus.projectboardadmin.controller;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -18,6 +17,6 @@ public class ArticleCommentManagementController {
             @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable,
             Model model
     ) {
-        return "management/articleComments";
+        return"management/article-comments";
     }
 }
