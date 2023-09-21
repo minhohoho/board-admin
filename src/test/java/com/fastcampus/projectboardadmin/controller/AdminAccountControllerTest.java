@@ -12,30 +12,27 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-
-@DisplayName("view 컨트롤러-어드민 회원")
+@DisplayName("View 컨트롤러 - 어드민 회원")
 @Import(SecurityConfig.class)
-@WebMvcTest(AdminUserAccountController.class)
-class AdminUserAccountControllerTest {
+@WebMvcTest(AdminAccountController.class)
+class AdminAccountControllerTest {
 
-    private  final MockMvc mvc;
+    private final MockMvc mvc;
 
-    public AdminUserAccountControllerTest(@Autowired MockMvc mvc) {
+    public AdminAccountControllerTest(@Autowired MockMvc mvc) {
         this.mvc = mvc;
     }
 
-    @DisplayName("[view][GET] 어드민 회원 페이지-정상 호출")
+    @DisplayName("[view][GET] 어드민 회원 페이지 - 정상 호출")
     @Test
-    void givenNoting_whenRequestingAdminMembersView_thenReturnsAdminMemberView() throws Exception{
-        //Given
+    void givenNothing_whenRequestingAdminMembersView_thenReturnsAdminMembersView() throws Exception {
+        // Given
 
-        //When & Then
+        // When & Then
         mvc.perform(get("/admin/members"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
                 .andExpect(view().name("admin/members"));
-
     }
-
 
 }
