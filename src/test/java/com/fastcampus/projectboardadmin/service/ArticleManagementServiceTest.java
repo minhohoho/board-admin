@@ -46,7 +46,8 @@ class ArticleManagementServiceTest {
         }
 
         @DisplayName("게시글 API 호출하면, 게시글을 가져온다.")
-        void given_when_then(){
+        @Test
+        void givenNoting_whenCallingArticleApi_thenReturnsArticleList(){
             //Given
 
 
