@@ -1,24 +1,21 @@
 package com.fastcampus.projectboardadmin.controller;
 
-
 import com.fastcampus.projectboardadmin.config.TestSecurityConfig;
-import com.fastcampus.projectboardadmin.domain.constant.RoleType;
 import com.fastcampus.projectboardadmin.dto.ArticleDto;
 import com.fastcampus.projectboardadmin.dto.UserAccountDto;
 import com.fastcampus.projectboardadmin.service.ArticleManagementService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.BDDMockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
 
 import static org.mockito.BDDMockito.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
@@ -26,7 +23,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@DisplayName("View 컨트롤러-게시글 관리")
+@DisplayName("컨트롤러 - 게시글 관리")
 @Import(TestSecurityConfig.class)
 @WebMvcTest(ArticleManagementController.class)
 class ArticleManagementControllerTest {
@@ -39,33 +36,33 @@ class ArticleManagementControllerTest {
         this.mvc = mvc;
     }
 
-    @DisplayName("[view][GET] 게시글 관리- 정상 호출")
+    @WithMockUser(username = "tester", roles = "USER")
+    @DisplayName("[view][GET] 게시글 관리 페이지 - 정상 호출")
     @Test
-    void givenNoting_whenRequestArticleManagementView_thenReturnsArticleManagementView() throws  Exception{
-        //Given
+    void givenNothing_whenRequestingArticleManagementView_thenReturnsArticleManagementView() throws Exception {
+        // Given
         given(articleManagementService.getArticles()).willReturn(List.of());
 
-        //When & Then
+        // When & Then
         mvc.perform(get("/management/articles"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
                 .andExpect(view().name("management/articles"))
-                .andExpect(model().attribute("articles",List.of()));
+                .andExpect(model().attribute("articles", List.of()));
         then(articleManagementService).should().getArticles();
-
     }
 
+    @WithMockUser(username = "tester", roles = "USER")
     @DisplayName("[data][GET] 게시글 1개 - 정상 호출")
     @Test
     void givenArticleId_whenRequestingArticle_thenReturnsArticle() throws Exception {
-        //Given
+        // Given
         Long articleId = 1L;
-        ArticleDto articleDto = createArticleDto("title","content");
+        ArticleDto articleDto = createArticleDto("title", "content");
         given(articleManagementService.getArticle(articleId)).willReturn(articleDto);
 
-
-        //When & Then
-        mvc.perform(get("/management/articles/"+articleId))
+        // When & Then
+        mvc.perform(get("/management/articles/" + articleId))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.id").value(articleId))
@@ -75,14 +72,15 @@ class ArticleManagementControllerTest {
         then(articleManagementService).should().getArticle(articleId);
     }
 
-    @DisplayName("[view][GET] 게시글 삭제 - 정상 호출")
+    @WithMockUser(username = "tester", roles = "MANAGER")
+    @DisplayName("[view][POST] 게시글 삭제 - 정상 호출")
     @Test
     void givenArticleId_whenRequestingDeletion_thenRedirectsToArticleManagementView() throws Exception {
-        //Given
+        // Given
         Long articleId = 1L;
         willDoNothing().given(articleManagementService).deleteArticle(articleId);
 
-        //When & Then
+        // When & Then
         mvc.perform(
                         post("/management/articles/" + articleId)
                                 .with(csrf())
@@ -91,10 +89,7 @@ class ArticleManagementControllerTest {
                 .andExpect(view().name("redirect:/management/articles"))
                 .andExpect(redirectedUrl("/management/articles"));
         then(articleManagementService).should().deleteArticle(articleId);
-
-
     }
-
 
 
     private ArticleDto createArticleDto(String title, String content) {
@@ -119,8 +114,5 @@ class ArticleManagementControllerTest {
                 "test memo"
         );
     }
-
-
-
 
 }
