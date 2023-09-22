@@ -4,24 +4,20 @@ import com.fastcampus.projectboardadmin.dto.response.AdminAccountResponse;
 import com.fastcampus.projectboardadmin.service.AdminAccountService;
 import lombok.RequiredArgsConstructor;
 
-
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RequestMapping("/admin/members")
 @Controller
 @RequiredArgsConstructor
 public class AdminAccountController {
 
     private final AdminAccountService adminAccountService;
 
-    @GetMapping
-    public String members(Model model){
-
+    @GetMapping("/admin/members")
+    public String members(){
         return "admin/members";
     }
 
